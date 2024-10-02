@@ -5,8 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@OneToMany(mappedBy = "topicos")
-private List<Topico> topicos;
+
 
 @Entity
 @Data
@@ -15,7 +14,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPost;
+    private Long id;
 
     private Boolean Like;
 
