@@ -16,12 +16,12 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Boolean Like;
+    private Boolean like;
 
     private String tipoPublicacao;
 
-    private int Curtidas;
+    private int curtidas;
 
-    private int Respostas;
+    private int respostas;
 }
 
