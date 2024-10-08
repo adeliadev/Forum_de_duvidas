@@ -1,11 +1,11 @@
 package com.forum.orbis.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -23,4 +23,7 @@ public class Usuario {
     private String email;
 
     private int nivel;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Post> posts;
 }
