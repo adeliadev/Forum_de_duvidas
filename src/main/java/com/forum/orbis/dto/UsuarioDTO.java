@@ -16,6 +16,7 @@ public class UsuarioDTO {
     private Long id;
     private String nomeDeUsuario;
     private String email;
+    private String senha;
     private Nivel nivel;
     private List<Post> posts;
 }
