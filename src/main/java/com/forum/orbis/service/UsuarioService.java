@@ -7,6 +7,8 @@ import com.forum.orbis.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class UsuarioService {
@@ -50,5 +52,30 @@ public class UsuarioService {
         usuario.setNivel(usuarioDTO.getNivel());
         usuario.setPosts(usuarioDTO.getPosts());
         return usuario;
+    }
+
+    public UsuarioDTO atualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
+        Optional<Usuario> optionalUsuario = usuarioRepository.findById(id);
+
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+            usuario.setNomeDeUsuario(usuarioDTO.getNomeDeUsuario());
+            usuario.setEmail(usuarioDTO.getEmail());
+            usuario.setSenha(usuarioDTO.getSenha());
+            usuario.setNivel(usuarioDTO.getNivel());
+
+            Usuario usuarioAtualizado = usuarioRepository.save(usuario);
+            return convertToDTO(usuarioAtualizado);
+        } else {
+            throw new RuntimeException("Usuário não encontrado");
+        }
+    }
+
+    public void deletarUsuario(Long id) {
+        if (usuarioRepository.existsById(id)) {
+            usuarioRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Usuário não encontrado");
+        }
     }
 }
