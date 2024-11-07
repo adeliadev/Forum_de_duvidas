@@ -1,11 +1,13 @@
 package com.forum.orbis.service;
 
-import com.forum.orbis.dto.UsuarioDTO;
 import com.forum.orbis.model.Nivel;
 import com.forum.orbis.model.Usuario;
 import com.forum.orbis.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -13,42 +15,30 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioDTO registrarUsuario(UsuarioDTO usuarioDTO) {
-        Usuario novoUsuario = new Usuario();
-        novoUsuario.setNomeDeUsuario(usuarioDTO.getNomeDeUsuario());
-        novoUsuario.setEmail(usuarioDTO.getEmail());
-        novoUsuario.setNivel(Nivel.USUARIO);
+    private final PasswordEncoder passwordEncoder;
 
-        Usuario usuarioSalvo = usuarioRepository.save(novoUsuario);
+    public Usuario registrarUsuario(String nomeDeUsuario, String email, String senha) {
+        if (usuarioRepository.findByNomeDeUsuario(nomeDeUsuario).isPresent()) {
+            throw new RuntimeException("Usuário já existe");
+        }
+        if (usuarioRepository.findByEmail(email).isPresent()) {
+            throw new RuntimeException("E-mail já está em uso");
+        }
 
-        UsuarioDTO usuarioRetornado = new UsuarioDTO();
-        usuarioRetornado.setId(usuarioSalvo.getId());
-        usuarioRetornado.setNomeDeUsuario(usuarioSalvo.getNomeDeUsuario());
-        usuarioRetornado.setEmail(usuarioSalvo.getEmail());
-        usuarioRetornado.setNivel(usuarioSalvo.getNivel());
-
-        return usuarioRetornado;
-    }
-
-    public UsuarioDTO convertToDTO(Usuario usuario) {
-        return new UsuarioDTO(
-                usuario.getId(),
-                usuario.getNomeDeUsuario(),
-                usuario.getEmail(),
-                usuario.getSenha(),
-                usuario.getNivel(),
-                usuario.getPosts()
-        );
-    }
-
-    public Usuario convertToEntity(UsuarioDTO usuarioDTO) {
         Usuario usuario = new Usuario();
-        usuario.setId(usuarioDTO.getId());
-        usuario.setNomeDeUsuario(usuarioDTO.getNomeDeUsuario());
-        usuario.setEmail(usuarioDTO.getEmail());
-        usuario.setSenha(usuarioDTO.getSenha());
-        usuario.setNivel(usuarioDTO.getNivel());
-        usuario.setPosts(usuarioDTO.getPosts());
-        return usuario;
+        usuario.setNomeDeUsuario(nomeDeUsuario);
+        usuario.setEmail(email);
+        usuario.setSenha(passwordEncoder.encode(senha));
+        usuario.setNivel(Nivel.USUARIO);
+
+        return usuarioRepository.save(usuario);
+    }
+
+    public Optional<Usuario> findByNomeDeUsuario(String nomeDeUsuario) {
+        return usuarioRepository.findByNomeDeUsuario(nomeDeUsuario);
+    }
+
+    public boolean checarSenha(String senhaCadastrada, String senhaCriptografada) {
+        return passwordEncoder.matches(senhaCadastrada, senhaCriptografada);
     }
 }
