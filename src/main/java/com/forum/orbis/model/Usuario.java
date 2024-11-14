@@ -38,5 +38,5 @@ public class Usuario {
     private Nivel nivel;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Post> posts;
+    private List<Postagens> posts;
 }
