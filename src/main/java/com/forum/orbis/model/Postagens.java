@@ -17,24 +17,17 @@ import java.util.List;
 @NoArgsConstructor
 public class Postagens {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String titulo;
 
-    private Long postagemId;
-
     private Date createdDate;
-
-
 
     @Lob
     @Column(name = "texto", length = 512)
     private String texto;
-
-
 
     @ElementCollection(targetClass = String.class)
     private List<String> tag;
@@ -44,6 +37,10 @@ public class Postagens {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Usuario usuario;
+
+    @OneToMany(mappedBy = "postagens", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Respostas> respostas;
+
 
     public PostagensDTO getPostagensDTO(){
         PostagensDTO postagensDTO = new PostagensDTO();
@@ -56,9 +53,6 @@ public class Postagens {
         postagensDTO.setNomeDeusuario(usuario.getNomeDeUsuario());
         return postagensDTO;
     }
-
-
-
 
 }
 

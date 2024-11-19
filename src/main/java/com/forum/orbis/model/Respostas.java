@@ -3,12 +3,14 @@ package com.forum.orbis.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.forum.orbis.dto.RespostasDTO;
 import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
 public class Respostas {
 
     @Id
@@ -22,57 +24,14 @@ public class Respostas {
     private Date createdDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idUsuario", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "usuario_id", nullable = false)
     @JsonIgnore
     private Usuario usuario;
 
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idPostagem", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "id_postagem", nullable = false)
     @JsonIgnore
     private Postagens postagens;
-
-    public Long getRespostasId() {
-        return respostasId;
-    }
-
-    public void setRespostasId(Long id) {
-        this.respostasId = id;
-    }
-
-    public String getTexto() {
-        return texto;
-    }
-
-    public void setTexto(String texto) {
-        this.texto = texto;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Postagens getPostagens() {
-        return postagens;
-    }
-
-    public void setPostagens(Postagens postagens) {
-        this.postagens = postagens;
-    }
 
     public RespostasDTO getRespostasDTO() {
         RespostasDTO respostasDTO = new RespostasDTO();
@@ -84,7 +43,5 @@ public class Respostas {
         respostasDTO.setNomeDoUsuario(usuario.getNomeDeUsuario());
         return respostasDTO;
     }
-
-
 
 }
