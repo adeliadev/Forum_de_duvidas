@@ -15,11 +15,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/registro", "/api/login") // Ignorar CSRF para o endpoint de registro
+                        .ignoringRequestMatchers("/api/registro", "/api/login")
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/registro", "/api/login").permitAll() // Permite acesso sem autenticação ao endpoint de registro
-                        .anyRequest().authenticated() // Qualquer outra requisição requer autenticação
+                        .requestMatchers("/api/registro", "/api/login").permitAll()
+                        .anyRequest().authenticated()
                 );
 
         return http.build();
