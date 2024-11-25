@@ -15,10 +15,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/registro", "/api/login")
+                        .ignoringRequestMatchers("/api/registro", "/api/login", "/api/login","/api/pesquisas/postar","/api/pesquisas/historico","/api/pesquisas/sugestoes")
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/registro", "/api/login").permitAll()
+                        .requestMatchers("/api/registro", "/api/login", "/api/login","/api/pesquisas/postar","/api/pesquisas/historico","/api/pesquisas/sugestoes").permitAll()
                         .anyRequest().authenticated()
                 );
 
